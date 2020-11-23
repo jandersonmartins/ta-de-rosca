@@ -1,4 +1,4 @@
-import SpeedTesteRepository from './repository/SpeedTesteRepository'
+import SpeedTesteRepository from './repositories/SpeedTesteRepository'
 import SpeedTestCrawler from './services/SpeedTestCrawler'
 
 class SpeedTest {
