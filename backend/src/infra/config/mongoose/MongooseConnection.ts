@@ -1,9 +1,7 @@
 import { connect, connection } from 'mongoose'
 
 class MongooseConnection {
-  get url (): string {
-    return process.env.MONGO_URL ?? 'mongodb://localhost:27017/ta-de-rosca'
-  }
+  constructor (private url: string) {}
 
   async start (): Promise<void> {
     await new Promise((resolve, reject) => {

@@ -1,4 +1,5 @@
 interface SpeedTestData {
+  uuid?: string
   downloadSpeed: number
   uploadSpeed: number
   downloadUnit: string
