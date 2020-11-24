@@ -1,5 +1,5 @@
 import SpeedTestData from './dto/SpeedTestData'
-import SpeedTesteDataRepository from './repositories/SpeedTesteRepository'
+import SpeedTesteDataRepository from './repositories/SpeedTestRepository'
 import SpeedTestCrawler from './services/SpeedTestCrawler'
 import SpeedTest from './SpeedTest'
 

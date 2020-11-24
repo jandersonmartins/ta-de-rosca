@@ -2,7 +2,7 @@ import { connect, connection } from 'mongoose'
 
 class MongooseConnection {
   get url (): string {
-    return process.env.MONGO_URL ?? 'mongodb://mongo/ta-de-rosca'
+    return process.env.MONGO_URL ?? 'mongodb://localhost:27017/ta-de-rosca'
   }
 
   async start (): Promise<void> {

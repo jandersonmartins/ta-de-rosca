@@ -1,7 +1,7 @@
 import SpeedTestData from '../dto/SpeedTestData'
 
-interface SpeedTesteRepository {
+interface SpeedTestRepository {
   save (data: SpeedTestData): Promise<void>
 }
 
-export default SpeedTesteRepository
+export default SpeedTestRepository
