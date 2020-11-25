@@ -1,18 +1,18 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
 export interface SpeedTestDocument extends Document {
-  downloadSpeed: number
-  uploadSpeed: number
-  downloadUnit: string
-  uploadUnit: string
-  ip: string
-  ping: number
-  pingUnit: string
-  requestLocation: string
-  serverLocation: string
-  service: string
-  serviceLocation: string
-  dateTime: Date
+  downloadSpeed: number | null
+  uploadSpeed: number | null
+  downloadUnit: string | null
+  uploadUnit: string | null
+  ip: string | null
+  ping: number | null
+  pingUnit: string | null
+  requestLocation: string | null
+  serverLocation: string | null
+  service: string | null
+  serviceLocation: string | null
+  dateTime: Date | null
 }
 
 const SpeedTestSchema = new Schema({

@@ -1,17 +1,17 @@
 interface SpeedTestData {
   uuid?: string
-  downloadSpeed: number
-  uploadSpeed: number
-  downloadUnit: string
-  uploadUnit: string
-  ip: string
-  ping: number
-  pingUnit: string
-  requestLocation: string
-  serverLocation: string
-  service: string
-  serviceLocation: string
-  dateTime: Date
+  downloadSpeed: string | null
+  uploadSpeed: string | null
+  downloadUnit: string | null
+  uploadUnit: string | null
+  ip: string | null
+  ping: string | null
+  pingUnit: string | null
+  requestLocation: string | null
+  serverLocation: string | null
+  service: string | null
+  serviceLocation: string | null
+  dateTime: Date | null
 }
 
 export default SpeedTestData

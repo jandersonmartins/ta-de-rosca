@@ -25,7 +25,7 @@ describe('SpeedTest', () => {
     expect(speedTestCrawler.crawl).toBeCalled()
   })
 
-  test('should run SpeedTesteDataRepository with service response', async () => {
+  it('should run SpeedTesteDataRepository with service response', async () => {
     const data: SpeedTestData = speedTestDataFactory()
 
     const MockSpeedTestCrawler = jest.fn<SpeedTestCrawler, any>(() => ({

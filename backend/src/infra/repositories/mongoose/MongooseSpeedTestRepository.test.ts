@@ -27,8 +27,6 @@ describe('MongooseSpeedTestRepository', () => {
 
     const result = await respository.save(data)
 
-    console.log(result)
-
     expect(result.uuid).toBeDefined()
     expect(result.downloadSpeed).toEqual(data.downloadSpeed)
     expect(result.uploadSpeed).toEqual(data.uploadSpeed)
