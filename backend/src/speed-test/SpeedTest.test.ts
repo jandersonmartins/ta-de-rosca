@@ -1,3 +1,4 @@
+import { speedTestDataFactory } from '../tests/factories/SpeedTestData'
 import SpeedTestData from './dto/SpeedTestData'
 import SpeedTesteDataRepository from './repositories/SpeedTestRepository'
 import SpeedTestCrawler from './services/SpeedTestCrawler'
@@ -25,13 +26,7 @@ describe('SpeedTest', () => {
   })
 
   test('should run SpeedTesteDataRepository with service response', async () => {
-    const data: SpeedTestData = {
-      downloadSpeed: 30,
-      uploadSpeed: 10,
-      downloadUnit: 'mb',
-      uploadUnit: 'mb',
-      dateTime: new Date()
-    }
+    const data: SpeedTestData = speedTestDataFactory()
 
     const MockSpeedTestCrawler = jest.fn<SpeedTestCrawler, any>(() => ({
       crawl: jest.fn().mockResolvedValue(data)

@@ -5,6 +5,13 @@ export interface SpeedTestDocument extends Document {
   uploadSpeed: number
   downloadUnit: string
   uploadUnit: string
+  ip: string
+  ping: number
+  pingUnit: string
+  requestLocation: string
+  serverLocation: string
+  service: string
+  serviceLocation: string
   dateTime: Date
 }
 
@@ -13,6 +20,13 @@ const SpeedTestSchema = new Schema({
   uploadSpeed: Number,
   downloadUnit: String,
   uploadUnit: String,
+  ip: String,
+  ping: Number,
+  pingUnit: String,
+  requestLocation: String,
+  serverLocation: String,
+  service: String,
+  serviceLocation: String,
   dateTime: Date
 }, {
   timestamps: true

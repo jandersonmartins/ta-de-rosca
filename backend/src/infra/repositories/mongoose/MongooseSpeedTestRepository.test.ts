@@ -1,6 +1,7 @@
 import MongooseConnection from '../../config/mongoose/MongooseConnection'
 import MongooseSpeedTestRepository from './MongooseSpeedTestRepository'
 import SpeedTestDocument from '../../models/mongoose/SpeedTest'
+import { speedTestDataFactory } from '../../../tests/factories/SpeedTestData'
 
 describe('MongooseSpeedTestRepository', () => {
   let mongooseConnection: MongooseConnection
@@ -21,16 +22,25 @@ describe('MongooseSpeedTestRepository', () => {
   })
 
   it('should return saved speed test', async () => {
+    const data = speedTestDataFactory()
     const respository = new MongooseSpeedTestRepository()
 
-    const result = await respository.save({
-      dateTime: new Date(),
-      downloadSpeed: 30,
-      uploadSpeed: 30,
-      downloadUnit: 'mb',
-      uploadUnit: 'mb'
-    })
+    const result = await respository.save(data)
+
+    console.log(result)
 
     expect(result.uuid).toBeDefined()
+    expect(result.downloadSpeed).toEqual(data.downloadSpeed)
+    expect(result.uploadSpeed).toEqual(data.uploadSpeed)
+    expect(result.downloadUnit).toEqual(data.downloadUnit)
+    expect(result.uploadUnit).toEqual(data.uploadUnit)
+    expect(result.ip).toEqual(data.ip)
+    expect(result.ping).toEqual(data.ping)
+    expect(result.pingUnit).toEqual(data.pingUnit)
+    expect(result.requestLocation).toEqual(data.requestLocation)
+    expect(result.serverLocation).toEqual(data.serverLocation)
+    expect(result.service).toEqual(data.service)
+    expect(result.serviceLocation).toEqual(data.serviceLocation)
+    expect(result.dateTime).toEqual(data.dateTime)
   })
 })
