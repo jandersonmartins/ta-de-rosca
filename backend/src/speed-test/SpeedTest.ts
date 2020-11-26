@@ -1,3 +1,4 @@
+import SpeedTestData from './dto/SpeedTestData'
 import SpeedTesteRepository from './repositories/SpeedTestRepository'
 import SpeedTestCrawler from './services/SpeedTestCrawler'
 
@@ -7,10 +8,12 @@ class SpeedTest {
     private speedTestRepository: SpeedTesteRepository
   ) {}
 
-  async run (): Promise<void> {
-    await this.speedTestRepository.save(
+  async run (): Promise<SpeedTestData> {
+    const result = await this.speedTestRepository.save(
       await this.speedTestCrawler.crawl()
     )
+
+    return result
   }
 }
 

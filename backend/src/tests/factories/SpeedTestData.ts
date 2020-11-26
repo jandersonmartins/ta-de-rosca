@@ -2,12 +2,12 @@ import SpeedTestData from '../../speed-test/dto/SpeedTestData'
 
 export const speedTestDataFactory = (): SpeedTestData => {
   return {
-    downloadSpeed: 30,
-    uploadSpeed: 10,
+    downloadSpeed: '30',
+    uploadSpeed: '10',
     downloadUnit: 'mb',
     uploadUnit: 'mb',
     ip: '45.178.202.15',
-    ping: 12,
+    ping: '12',
     pingUnit: 'ms',
     requestLocation: 'Maceio, BR',
     serverLocation: 'Maceio, BR',

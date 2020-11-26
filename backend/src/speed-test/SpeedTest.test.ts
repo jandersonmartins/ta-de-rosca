@@ -48,4 +48,40 @@ describe('SpeedTest', () => {
 
     expect(fnRepositorySpy).toBeCalledWith(data)
   })
+
+  it('should return SpeedTestData', async () => {
+    const data: SpeedTestData = speedTestDataFactory()
+
+    const MockSpeedTestCrawler = jest.fn<SpeedTestCrawler, any>(() => ({
+      crawl: jest.fn().mockResolvedValue(data)
+    }))
+
+    const MockSpeedTesteDataRepository = jest.fn<SpeedTesteDataRepository, any>(() => ({
+      save: jest.fn().mockResolvedValue({
+        uuid: '000-xxxx',
+        ...data
+      })
+    }))
+
+    const speedTestCrawler = new MockSpeedTestCrawler()
+    const speedTestRepository = new MockSpeedTesteDataRepository()
+
+    const result = await new SpeedTest(
+      speedTestCrawler,
+      speedTestRepository
+    ).run()
+
+    expect(result.uuid).toBeDefined()
+    expect(result.downloadSpeed).toEqual('30')
+    expect(result.uploadSpeed).toEqual('10')
+    expect(result.downloadUnit).toEqual('mb')
+    expect(result.uploadUnit).toEqual('mb')
+    expect(result.ip).toEqual('45.178.202.15')
+    expect(result.ping).toEqual('12')
+    expect(result.pingUnit).toEqual('ms')
+    expect(result.requestLocation).toEqual('Maceio, BR')
+    expect(result.serverLocation).toEqual('Maceio, BR')
+    expect(result.service).toEqual('fast')
+    expect(result.serviceLocation).toEqual('https://fast.com')
+  })
 })

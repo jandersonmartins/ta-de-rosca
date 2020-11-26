@@ -1,12 +1,12 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
 export interface SpeedTestDocument extends Document {
-  downloadSpeed: number | null
-  uploadSpeed: number | null
+  downloadSpeed: string | null
+  uploadSpeed: string | null
   downloadUnit: string | null
   uploadUnit: string | null
   ip: string | null
-  ping: number | null
+  ping: string | null
   pingUnit: string | null
   requestLocation: string | null
   serverLocation: string | null
@@ -16,12 +16,12 @@ export interface SpeedTestDocument extends Document {
 }
 
 const SpeedTestSchema = new Schema({
-  downloadSpeed: Number,
-  uploadSpeed: Number,
+  downloadSpeed: String,
+  uploadSpeed: String,
   downloadUnit: String,
   uploadUnit: String,
   ip: String,
-  ping: Number,
+  ping: String,
   pingUnit: String,
   requestLocation: String,
   serverLocation: String,

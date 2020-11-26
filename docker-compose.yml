@@ -9,5 +9,13 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo
+
 volumes:
   mongo-data:
