@@ -17,6 +17,7 @@ class MongooseSpeedTestRepository implements SpeedTesteRepository {
     speedTestDocument.serverLocation = data.serverLocation
     speedTestDocument.service = data.service
     speedTestDocument.serviceLocation = data.serviceLocation
+    speedTestDocument.screenshot = data.screenshot
     speedTestDocument.dateTime = data.dateTime
 
     const saved = await speedTestDocument.save()

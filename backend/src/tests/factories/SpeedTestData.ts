@@ -13,6 +13,7 @@ export const speedTestDataFactory = (): SpeedTestData => {
     serverLocation: 'Maceio, BR',
     service: 'fast',
     serviceLocation: 'https://fast.com',
+    screenshot: 'me.jpg',
     dateTime: new Date()
   }
 }

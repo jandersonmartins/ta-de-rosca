@@ -1,10 +1,25 @@
+import { join } from 'path'
 import puppeteer from 'puppeteer'
 
 import SpeedTestData from '../../../speed-test/dto/SpeedTestData'
 import SpeedTestCrawler from '../../../speed-test/services/SpeedTestCrawler'
 
+export interface FastComCrawlerOptions {
+  url?: string
+  screenShotOutputDir?: string
+}
+
 class FastComCrawler implements SpeedTestCrawler {
-  constructor (private url: string = 'https://fast.com') {}
+  private url: string
+  private screenShotOutputDir: string | undefined
+
+  constructor ({
+    url = 'https://fast.com',
+    screenShotOutputDir
+  }: FastComCrawlerOptions) {
+    this.url = url
+    this.screenShotOutputDir = screenShotOutputDir
+  }
 
   async crawl (): Promise<SpeedTestData> {
     const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
@@ -21,6 +36,13 @@ class FastComCrawler implements SpeedTestCrawler {
     const downloadFinish = await page.$('#speed-value.succeeded')
     const uploadFinish = await page.$('#upload-value.succeeded')
     if (!!downloadFinish && !!uploadFinish) {
+      let screenshot: string | null = null
+      if (this.screenShotOutputDir) {
+        screenshot = `${Date.now()}.png`
+        const screenshotPath = join(this.screenShotOutputDir, screenshot)
+        await page.click('#show-more-details-link')
+        await page.screenshot({ path: screenshotPath, fullPage: true })
+      }
       const result = {
         downloadSpeed: await this.getEl(page, '#speed-value'),
         uploadSpeed: await this.getEl(page, '#upload-value'),
@@ -33,7 +55,8 @@ class FastComCrawler implements SpeedTestCrawler {
         serverLocation: await this.getEl(page, '#server-locations'),
         service: 'fast',
         serviceLocation: 'https://fast.com',
-        dateTime: new Date()
+        dateTime: new Date(),
+        screenshot
       }
 
       browser.close()

@@ -11,6 +11,7 @@ interface SpeedTestData {
   serverLocation: string | null
   service: string | null
   serviceLocation: string | null
+  screenshot: string | null
   dateTime: Date | null
 }
 

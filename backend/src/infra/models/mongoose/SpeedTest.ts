@@ -12,6 +12,7 @@ export interface SpeedTestDocument extends Document {
   serverLocation: string | null
   service: string | null
   serviceLocation: string | null
+  screenshot: string | null
   dateTime: Date | null
 }
 
@@ -27,6 +28,7 @@ const SpeedTestSchema = new Schema({
   serverLocation: String,
   service: String,
   serviceLocation: String,
+  screenshot: String,
   dateTime: Date
 }, {
   timestamps: true

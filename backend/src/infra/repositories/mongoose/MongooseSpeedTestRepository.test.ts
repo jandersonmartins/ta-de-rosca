@@ -39,6 +39,7 @@ describe('MongooseSpeedTestRepository', () => {
     expect(result.serverLocation).toEqual(data.serverLocation)
     expect(result.service).toEqual(data.service)
     expect(result.serviceLocation).toEqual(data.serviceLocation)
+    expect(result.screenshot).toEqual(data.screenshot)
     expect(result.dateTime).toEqual(data.dateTime)
   })
 })

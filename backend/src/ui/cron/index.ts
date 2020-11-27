@@ -1,3 +1,5 @@
+import { join } from 'path'
+import { mkdir } from 'fs'
 import { schedule } from 'node-cron'
 import debug from 'debug'
 
@@ -23,9 +25,13 @@ const init = async () => {
   }
 }
 
-const startTask = () => {
+const startTask = async () => {
+  const outputFiles = join(__dirname, 'tmp')
+
   const speedTest = new SpeedTest(
-    new FastComCrawler(),
+    new FastComCrawler({
+      screenShotOutputDir: outputFiles
+    }),
     new MongooseSpeedTestRepository()
   )
 
@@ -42,7 +48,9 @@ const startTask = () => {
     }
   })
 
-  task.start()
+  mkdir(outputFiles, () => {
+    task.start()
+  })
 
   const stop = () => {
     task.stop()

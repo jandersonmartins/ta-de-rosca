@@ -83,5 +83,6 @@ describe('SpeedTest', () => {
     expect(result.serverLocation).toEqual('Maceio, BR')
     expect(result.service).toEqual('fast')
     expect(result.serviceLocation).toEqual('https://fast.com')
+    expect(result.screenshot).toEqual('me.jpg')
   })
 })

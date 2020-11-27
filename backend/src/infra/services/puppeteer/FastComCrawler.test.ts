@@ -1,10 +1,12 @@
 import { createServer, Server } from 'http'
-import { createReadStream } from 'fs'
+import { createReadStream, mkdir } from 'fs'
 import { join } from 'path'
+import del from 'del'
 
 import FastComCrawler from './FastComCrawler'
 
 describe('FastComCrawler', () => {
+  const path: string = join(__dirname, 'tmp')
   let server: Server
 
   beforeAll(async () => {
@@ -13,18 +15,28 @@ describe('FastComCrawler', () => {
         createReadStream(join(__dirname, '/fixtures/example.html')).pipe(res)
       })
 
-      server.listen(4001, () => resolve())
+      server.listen(4001, () => {
+        mkdir(path, () => {
+          resolve()
+        })
+      })
     })
   })
 
   afterAll(async () => {
+    try {
+      await del(path)
+    } catch (e) { }
     await new Promise(resolve => {
       server.close(() => resolve())
     })
   })
 
   it('should return crawled data from fast.com', async () => {
-    const crawler = new FastComCrawler('http://localhost:4001')
+    const crawler = new FastComCrawler({
+      url: 'http://localhost:4001',
+      screenShotOutputDir: path
+    })
 
     const result = await crawler.crawl()
 
@@ -39,5 +51,6 @@ describe('FastComCrawler', () => {
     expect(result.serverLocation).toEqual('Rio Largo, BR')
     expect(result.service).toEqual('fast')
     expect(result.serviceLocation).toEqual('https://fast.com')
+    expect(result.screenshot).toBeDefined()
   })
 })
