@@ -26,7 +26,7 @@ const init = async () => {
 }
 
 const startTask = async () => {
-  const outputFiles = join(__dirname, 'tmp')
+  const outputFiles = process.env.SCREENSHOT_DIR ?? join(__dirname, 'tmp')
 
   const speedTest = new SpeedTest(
     new FastComCrawler({
@@ -35,6 +35,7 @@ const startTask = async () => {
     new MongooseSpeedTestRepository()
   )
 
+  // run every 10 minutes
   const task = schedule('0 */10 * * * *', async () => {
     try {
       debugFn('task started at %s', new Date())
@@ -49,10 +50,12 @@ const startTask = async () => {
   })
 
   mkdir(outputFiles, () => {
+    debugFn('screenshot directory created: %s', outputFiles)
     task.start()
   })
 
   const stop = () => {
+    debugFn('process stopped')
     task.stop()
     process.exit(0)
   }

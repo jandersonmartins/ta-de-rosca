@@ -11,6 +11,7 @@ describe('MongooseSpeedTestRepository', () => {
   }
 
   beforeAll(async () => {
+    // TODO: accept MONGO_URL environment variable
     mongooseConnection = new MongooseConnection('mongodb://localhost:27017/ta-de-rosca-test')
     await mongooseConnection.start()
     await cleanUp()

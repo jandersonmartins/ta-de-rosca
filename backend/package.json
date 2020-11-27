@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "lint": "eslint src --ext .ts"
+    "lint": "eslint src --ext .ts",
+    "dev:cron": "DEBUG=cron ts-node src/ui/cron/index.ts"
   },
   "keywords": [],
   "author": "",
