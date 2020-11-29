@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  backend:
+  crawler:
     build:
-      context: ./backend
+      context: ./crawler
     environment:
       - SCREENSHOT_DIR=/app/build/src/ui/cron/tmp
       - MONGO_URL=mongodb://mongo:27017/ta-de-rosca
