@@ -33,46 +33,36 @@ class FastComCrawler implements SpeedTestCrawler {
   }
 
   private async speedTest (browser: puppeteer.Browser, page: puppeteer.Page): Promise<SpeedTestData> {
-    const downloadFinish = await page.$('#speed-value.succeeded')
-    const uploadFinish = await page.$('#upload-value.succeeded')
-    if (!!downloadFinish && !!uploadFinish) {
-      let screenshot: string | null = null
-      if (this.screenShotOutputDir) {
-        screenshot = `${Date.now()}.png`
-        const screenshotPath = join(this.screenShotOutputDir, screenshot)
-        await page.click('#show-more-details-link')
-        await page.screenshot({ path: screenshotPath, fullPage: true })
-      }
-      const result = {
-        downloadSpeed: await this.getEl(page, '#speed-value'),
-        uploadSpeed: await this.getEl(page, '#upload-value'),
-        downloadUnit: await this.getEl(page, '#speed-units'),
-        uploadUnit: await this.getEl(page, '#upload-units'),
-        ip: await this.getEl(page, '#user-ip'),
-        ping: await this.getEl(page, '#bufferbloat-value'),
-        pingUnit: await this.getEl(page, '#bufferbloat-units'),
-        requestLocation: await this.getEl(page, '#user-location'),
-        serverLocation: await this.getEl(page, '#server-locations'),
-        service: 'fast',
-        serviceLocation: 'https://fast.com',
-        dateTime: new Date(),
-        screenshot
-      }
+    await page.waitForSelector('#speed-value.succeeded', { timeout: 0 })
+    await page.waitForSelector('#upload-value.succeeded', { timeout: 0 })
 
-      browser.close()
-
-      return result
+    let screenshot: string | null = null
+    if (this.screenShotOutputDir) {
+      screenshot = `${Date.now()}.png`
+      const screenshotPath = join(this.screenShotOutputDir, screenshot)
+      await page.click('#show-more-details-link')
+      await page.screenshot({ path: screenshotPath, fullPage: true })
     }
 
-    await this.delay()
+    const result = {
+      downloadSpeed: await this.getEl(page, '#speed-value'),
+      uploadSpeed: await this.getEl(page, '#upload-value'),
+      downloadUnit: await this.getEl(page, '#speed-units'),
+      uploadUnit: await this.getEl(page, '#upload-units'),
+      ip: await this.getEl(page, '#user-ip'),
+      ping: await this.getEl(page, '#bufferbloat-value'),
+      pingUnit: await this.getEl(page, '#bufferbloat-units'),
+      requestLocation: await this.getEl(page, '#user-location'),
+      serverLocation: await this.getEl(page, '#server-locations'),
+      service: 'fast',
+      serviceLocation: 'https://fast.com',
+      dateTime: new Date(),
+      screenshot
+    }
 
-    return await this.speedTest(browser, page)
-  }
+    browser.close()
 
-  private async delay (): Promise<void> {
-    await new Promise(resolve => {
-      setTimeout(() => resolve(), 2000)
-    })
+    return result
   }
 
   private async getEl (page: puppeteer.Page, selector: string): Promise<string | null> {
