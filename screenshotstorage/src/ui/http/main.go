@@ -1,10 +1,12 @@
 package main
 
 import (
-	"fmt"
-	storage "ta-de-rosca/screenshotstorage/src/storage"
+	"net/http"
+	handlers "ta-de-rosca/screenshotstorage/src/ui/http/handlers"
 )
 
 func main() {
-	fmt.Println(storage.SaveFile())
+	http.HandleFunc("/upload", handlers.Upload)
+	http.HandleFunc("/files", handlers.ReadFile)
+	http.ListenAndServe(":3001", nil)
 }
