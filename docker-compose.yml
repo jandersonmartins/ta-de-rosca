@@ -10,6 +10,15 @@ services:
       - DEBUG=cron
     depends_on:
       - mongo
+      - screenshotstorage
+
+  screenshotstorage:
+    build:
+      context: ./screenshotstorage
+    environment:
+      - SCREENSHOT_DIR=/app/files
+    ports:
+      - 3001:3001
 
   mongo:
     image: mongo
