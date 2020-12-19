@@ -1,27 +1,21 @@
-import { join } from 'path'
 import puppeteer from 'puppeteer'
 
-import SpeedTestData from '../../../speed-test/dto/SpeedTestData'
-import SpeedTestCrawler from '../../../speed-test/services/SpeedTestCrawler'
+import SpeedTestCrawler, { CrawlOutput } from '../../../speed-test/services/SpeedTestCrawler'
 
 export interface FastComCrawlerOptions {
   url?: string
-  screenShotOutputDir?: string
 }
 
 class FastComCrawler implements SpeedTestCrawler {
   private url: string
-  private screenShotOutputDir: string | undefined
 
   constructor ({
-    url = 'https://fast.com',
-    screenShotOutputDir
-  }: FastComCrawlerOptions) {
+    url = 'https://fast.com'
+  }: FastComCrawlerOptions = {}) {
     this.url = url
-    this.screenShotOutputDir = screenShotOutputDir
   }
 
-  async crawl (): Promise<SpeedTestData> {
+  async crawl (): Promise<CrawlOutput> {
     const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
     const page = await browser.newPage()
 
@@ -32,17 +26,13 @@ class FastComCrawler implements SpeedTestCrawler {
     return result
   }
 
-  private async speedTest (browser: puppeteer.Browser, page: puppeteer.Page): Promise<SpeedTestData> {
+  private async speedTest (browser: puppeteer.Browser, page: puppeteer.Page): Promise<CrawlOutput> {
     await page.waitForSelector('#speed-value.succeeded', { timeout: 0 })
     await page.waitForSelector('#upload-value.succeeded', { timeout: 0 })
 
-    let screenshot: string | null = null
-    if (this.screenShotOutputDir) {
-      screenshot = `${Date.now()}.png`
-      const screenshotPath = join(this.screenShotOutputDir, screenshot)
-      await page.click('#show-more-details-link')
-      await page.screenshot({ path: screenshotPath, fullPage: true })
-    }
+    const screenshot = `${Date.now()}.png`
+    await page.click('#show-more-details-link')
+    const buffer = await page.screenshot({ fullPage: true })
 
     const result = {
       downloadSpeed: await this.getEl(page, '#speed-value'),
@@ -62,7 +52,7 @@ class FastComCrawler implements SpeedTestCrawler {
 
     browser.close()
 
-    return result
+    return { screenshot: buffer, speedTestData: result }
   }
 
   private async getEl (page: puppeteer.Page, selector: string): Promise<string | null> {

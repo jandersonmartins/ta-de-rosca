@@ -9,9 +9,9 @@ class SpeedTest {
   ) {}
 
   async run (): Promise<SpeedTestData> {
-    const result = await this.speedTestRepository.save(
-      await this.speedTestCrawler.crawl()
-    )
+    const { speedTestData } = await this.speedTestCrawler.crawl()
+
+    const result = await this.speedTestRepository.save(speedTestData)
 
     return result
   }

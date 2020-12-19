@@ -5,7 +5,6 @@ services:
     build:
       context: ./crawler
     environment:
-      - SCREENSHOT_DIR=/app/build/src/ui/cron/tmp
       - MONGO_URL=mongodb://mongo:27017/ta-de-rosca
       - DEBUG=cron
     depends_on:

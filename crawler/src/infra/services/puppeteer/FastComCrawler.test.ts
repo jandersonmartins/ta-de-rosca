@@ -1,5 +1,5 @@
 import { createServer, Server } from 'http'
-import { createReadStream, mkdir } from 'fs'
+import { createReadStream } from 'fs'
 import { join } from 'path'
 import del from 'del'
 
@@ -16,9 +16,7 @@ describe('FastComCrawler', () => {
       })
 
       server.listen(4001, () => {
-        mkdir(path, () => {
-          resolve()
-        })
+        resolve()
       })
     })
   })
@@ -34,23 +32,21 @@ describe('FastComCrawler', () => {
 
   it('should return crawled data from fast.com', async () => {
     const crawler = new FastComCrawler({
-      url: 'http://localhost:4001',
-      screenShotOutputDir: path
+      url: 'http://localhost:4001'
     })
 
     const result = await crawler.crawl()
 
-    expect(result.downloadSpeed).toEqual('26')
-    expect(result.uploadSpeed).toEqual('26')
-    expect(result.downloadUnit).toEqual('Mbps')
-    expect(result.uploadUnit).toEqual('Mbps')
-    expect(result.ip).toEqual('45.178.202.15')
-    expect(result.ping).toEqual('22')
-    expect(result.pingUnit).toEqual('ms')
-    expect(result.requestLocation).toEqual('Maceio, BR')
-    expect(result.serverLocation).toEqual('Rio Largo, BR')
-    expect(result.service).toEqual('fast')
-    expect(result.serviceLocation).toEqual('https://fast.com')
-    expect(result.screenshot).toBeDefined()
+    expect(result.speedTestData.downloadSpeed).toEqual('26')
+    expect(result.speedTestData.uploadSpeed).toEqual('26')
+    expect(result.speedTestData.downloadUnit).toEqual('Mbps')
+    expect(result.speedTestData.uploadUnit).toEqual('Mbps')
+    expect(result.speedTestData.ip).toEqual('45.178.202.15')
+    expect(result.speedTestData.ping).toEqual('22')
+    expect(result.speedTestData.pingUnit).toEqual('ms')
+    expect(result.speedTestData.requestLocation).toEqual('Maceio, BR')
+    expect(result.speedTestData.serverLocation).toEqual('Rio Largo, BR')
+    expect(result.speedTestData.service).toEqual('fast')
+    expect(result.speedTestData.serviceLocation).toEqual('https://fast.com')
   })
 })

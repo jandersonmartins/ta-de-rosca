@@ -5,7 +5,7 @@
 Start cron task:
 
 ```sh
-MONGO_URL=mongodb://localhost:27017/ta-de-rosca SCREENSHOT_DIR=src/ui/cron/tmp npm run dev:cron
+MONGO_URL=mongodb://localhost:27017/ta-de-rosca npm run dev:cron
 ```
 
 ## Tests
