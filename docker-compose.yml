@@ -7,6 +7,7 @@ services:
     environment:
       - MONGO_URL=mongodb://mongo:27017/ta-de-rosca
       - DEBUG=cron
+      - SCREENSHOT_SERVICE=http://screenshotstorage:3001/
     depends_on:
       - mongo
       - screenshotstorage
