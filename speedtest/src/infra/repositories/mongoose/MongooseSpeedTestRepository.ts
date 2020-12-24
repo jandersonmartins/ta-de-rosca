@@ -27,6 +27,10 @@ class MongooseSpeedTestRepository implements SpeedTesteRepository {
       uuid: saved._id
     }
   }
+
+  async getAll (): Promise<SpeedTestData[]> {
+    return await SpeedTestDocument.find()
+  }
 }
 
 export default MongooseSpeedTestRepository
