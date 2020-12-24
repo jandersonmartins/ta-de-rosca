@@ -1,10 +1,10 @@
-import { connect, connection } from 'mongoose'
+import { connect, Connection, connection } from 'mongoose'
 
 class MongooseConnection {
   constructor (private url: string) {}
 
-  async start (): Promise<void> {
-    await new Promise((resolve, reject) => {
+  async start (): Promise<Connection> {
+    return await new Promise((resolve, reject) => {
       connect(this.url, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -13,14 +13,14 @@ class MongooseConnection {
 
       connection.on('error', err => reject(err))
 
-      connection.once('open', () => resolve())
+      connection.once('open', () => resolve(connection))
     })
   }
 
   async stop (): Promise<void> {
     await new Promise(resolve =>
       connection.close(() =>
-        resolve()
+        resolve(undefined)
       )
     )
   }
