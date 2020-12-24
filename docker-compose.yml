@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  crawler:
+  speedtest:
     build:
-      context: ./crawler
+      context: ./speedtest
     environment:
       - MONGO_URL=mongodb://mongo:27017/ta-de-rosca
       - DEBUG=cron

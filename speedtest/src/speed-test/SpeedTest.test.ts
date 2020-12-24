@@ -17,7 +17,8 @@ describe('SpeedTest', () => {
     }))
 
     const MockSpeedTesteDataRepository = jest.fn<SpeedTesteDataRepository, any>(() => ({
-      save: jest.fn()
+      save: jest.fn(),
+      getAll: jest.fn()
     }))
 
     const MockScreenshotUpload = jest.fn<ScreenshotUpload, any>(() => ({
@@ -53,7 +54,8 @@ describe('SpeedTest', () => {
       save: jest.fn().mockResolvedValue({
         uuid: '000-xxxx',
         ...data
-      })
+      }),
+      getAll: jest.fn()
     }))
 
     const MockScreenshotUpload = jest.fn<ScreenshotUpload, any>(() => ({
@@ -100,7 +102,8 @@ describe('SpeedTest', () => {
       save: jest.fn().mockResolvedValue({
         uuid: '000-xxxx',
         ...data
-      })
+      }),
+      getAll: jest.fn()
     }))
 
     const uploadMock = jest.fn()
