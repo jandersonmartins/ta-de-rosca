@@ -3,6 +3,8 @@ import { createServer } from 'http'
 import express from 'express'
 import socketIO from 'socket.io'
 
+import { setupHandlers } from './handlers'
+
 const app = express()
 const server = createServer(app)
 const io = new socketIO.Server(server)
@@ -10,8 +12,7 @@ const io = new socketIO.Server(server)
 export const start = async (): Promise<void> => {
   return new Promise(resolve => {
     server.listen(process.env.SERVER_PORT ?? 4001, () => {
-      io.on('connection', () => {})
-
+      setupHandlers(io)
       resolve()
     })
   })
