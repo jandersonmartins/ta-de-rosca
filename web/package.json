@@ -13,6 +13,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
+    "socket.io-client": "^3.0.4",
     "typescript": "^4.0.3",
     "web-vitals": "^0.2.4"
   },
@@ -28,11 +29,14 @@
       "react-app/jest"
     ],
     "rules": {
-      "react/jsx-no-bind": ["error", {
-        "allowArrowFunctions": true,
-        "allowBind": false,
-        "ignoreRefs": true
-      }],
+      "react/jsx-no-bind": [
+        "error",
+        {
+          "allowArrowFunctions": true,
+          "allowBind": false,
+          "ignoreRefs": true
+        }
+      ],
       "react/no-did-update-set-state": "error",
       "react/no-unknown-property": "error",
       "react/no-unused-prop-types": "error",
