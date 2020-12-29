@@ -2,14 +2,23 @@ import { createServer } from 'http'
 
 import express from 'express'
 import socketIO from 'socket.io'
+import cors from 'cors'
 import debug from 'debug'
 
 import { setupHandlers } from './handlers'
 
 const debugFn = debug('server')
 const app = express()
+
+app.use(cors())
+
 const server = createServer(app)
-const io = new socketIO.Server(server)
+const io = new socketIO.Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+})
 
 export const start = async (): Promise<void> => {
   return new Promise(resolve => {
