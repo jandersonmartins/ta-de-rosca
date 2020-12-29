@@ -1,5 +1,6 @@
 import React from 'react'
 import './App.css'
+import SpeedTestList from './SpeedTestList'
 
 const App = () => (
   <div>
@@ -12,6 +13,10 @@ const App = () => (
         Ta de Rosca o.o
       </a>
     </header>
+
+    <main>
+      <SpeedTestList />
+    </main>
   </div>
 )
 
