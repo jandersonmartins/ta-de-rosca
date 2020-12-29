@@ -6,7 +6,7 @@ services:
       context: ./speedtest
     environment:
       - MONGO_URL=mongodb://mongo:27017/ta-de-rosca
-      - DEBUG=cron
+      - DEBUG=cron,server
       - SCREENSHOT_SERVICE=http://screenshotstorage:3001/
       - SERVER_PORT=4001
     depends_on:

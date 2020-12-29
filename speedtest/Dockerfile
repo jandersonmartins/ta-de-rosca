@@ -52,4 +52,4 @@ RUN npm run build
 
 ENTRYPOINT ["dumb-init", "--"]
 
-CMD [ "node", "build/src/ui/cron/index.js" ]
+CMD [ "npm", "start" ]

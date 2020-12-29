@@ -4,10 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "concurrently npm:start:*",
+    "start:cron": "node build/src/ui/cron/index.js",
+    "start:server": "node build/src/ui/websocket/index.js",
     "test": "NODE_ENV=test jest --runInBand",
     "build": "tsc",
     "lint": "eslint src --ext .ts",
-    "dev:cron": "DEBUG=cron ts-node src/ui/cron/index.ts"
+    "dev:cron": "DEBUG=cron ts-node src/ui/cron/index.ts",
+    "dev:socket": "ts-node src/ui/websocket/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -40,6 +44,7 @@
     "typescript": "^4.0.5"
   },
   "dependencies": {
+    "concurrently": "^5.3.0",
     "debug": "^4.3.1",
     "express": "^4.17.1",
     "form-data": "^3.0.0",
