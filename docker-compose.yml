@@ -12,6 +12,8 @@ services:
     depends_on:
       - mongo
       - screenshotstorage
+    ports:
+      - 4001:4001
 
   screenshotstorage:
     build:
