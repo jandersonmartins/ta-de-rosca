@@ -2,6 +2,8 @@ import React from 'react'
 import { useSpeedTestData } from './useSpeedTestData'
 import SpeedTestData from './SpeedTestData'
 
+const BASE_URL = process.env.REACT_APP_SCREENSHOT_BASE_URL ?? 'http://localhost:3001'
+
 const SpeedTestList = () => {
   const data = useSpeedTestData()
   return (
@@ -29,8 +31,7 @@ const SpeedTestList = () => {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  // TODO: receive url from environment variable
-                  href={`http://localhost:3001/files?name=${d.screenshot}`}
+                  href={`${BASE_URL}/files?name=${d.screenshot}`}
                 >Screenshot</a>
               </td>
             </tr>
