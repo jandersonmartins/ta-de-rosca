@@ -5,12 +5,14 @@ import socketIO from 'socket.io'
 import cors from 'cors'
 import debug from 'debug'
 
-import { setupHandlers } from './handlers'
+import { setupHandlers } from './websocket'
+import { setupRoutes } from './http'
 
 const debugFn = debug('server')
 const app = express()
 
 app.use(cors())
+setupRoutes(app)
 
 const server = createServer(app)
 const io = new socketIO.Server(server, {
