@@ -9,11 +9,13 @@ describe('SpeedTestList', () => {
     const data2: SpeedTestData = speedTestDataFactory()
 
     const speedTestRespository = new FakeSpeedTestRepository()
-    jest.spyOn(speedTestRespository, 'getAll').mockResolvedValueOnce([data, data2])
+
+    await speedTestRespository.save(data)
+    await speedTestRespository.save(data2)
 
     const result = await new SpeedTestList(
       speedTestRespository
-    ).run()
+    ).run({ page: 1 })
 
     expect(result).toEqual([data, data2])
   })

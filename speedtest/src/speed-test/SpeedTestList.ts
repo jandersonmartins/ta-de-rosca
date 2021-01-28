@@ -1,13 +1,17 @@
 import SpeedTestData from './dto/SpeedTestData'
 import SpeedTestRepository from './repositories/SpeedTestRepository'
 
+export interface SpeedTestListData {
+  page: number
+}
+
 class SpeedTestList {
   constructor (
     private speedTestRepository: SpeedTestRepository
   ) {}
 
-  async run (): Promise<SpeedTestData[]> {
-    return await this.speedTestRepository.getAll()
+  async run ({ page }: SpeedTestListData): Promise<SpeedTestData[]> {
+    return await this.speedTestRepository.getAll(page)
   }
 }
 

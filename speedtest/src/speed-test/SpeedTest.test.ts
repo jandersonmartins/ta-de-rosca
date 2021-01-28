@@ -1,78 +1,52 @@
 import { speedTestDataFactory } from '../tests/factories/SpeedTestData'
+import FakeSpeedTestRepository from '../tests/repositories/FakeSpeedTestRepository'
+import FakeScreenshotUpload from '../tests/services/FakeScreenshotUpload'
+import FakeSpeedTestCrawler from '../tests/services/FakeSpeedTestCrawler'
 import SpeedTestData from './dto/SpeedTestData'
-import SpeedTesteDataRepository from './repositories/SpeedTestRepository'
-import ScreenshotUpload from './services/ScreenshotUpload'
-import SpeedTestCrawler from './services/SpeedTestCrawler'
 import SpeedTest from './SpeedTest'
 
 describe('SpeedTest', () => {
-  it('should run SpeedTesteDataRepository with service response', async () => {
-    const data: SpeedTestData = speedTestDataFactory()
+  let speedTestData: SpeedTestData
+  let screenshot: Buffer
 
-    const MockSpeedTestCrawler = jest.fn<SpeedTestCrawler, any>(() => ({
-      crawl: jest.fn().mockResolvedValue({
-        speedTestData: data,
-        screenshot: Buffer.from('')
-      })
-    }))
+  let fakeSpeedTestCrawler: FakeSpeedTestCrawler
+  let fakeSpeedTestRepository: FakeSpeedTestRepository
+  let fakeScreenshotUpload: FakeScreenshotUpload
 
-    const MockSpeedTesteDataRepository = jest.fn<SpeedTesteDataRepository, any>(() => ({
-      save: jest.fn(),
-      getAll: jest.fn()
-    }))
+  let uploadSpy: any
 
-    const MockScreenshotUpload = jest.fn<ScreenshotUpload, any>(() => ({
-      upload: jest.fn()
-    }))
+  let result: SpeedTestData
 
-    const speedTestCrawler = new MockSpeedTestCrawler()
-    const speedTestRepository = new MockSpeedTesteDataRepository()
-    const screenShotUpload = new MockScreenshotUpload()
+  beforeAll(async () => {
+    // data
+    speedTestData = speedTestDataFactory()
+    screenshot = Buffer.from('')
 
-    const fnRepositorySpy = jest.spyOn(speedTestRepository, 'save')
+    // fakes
+    fakeSpeedTestCrawler = new FakeSpeedTestCrawler()
+    fakeSpeedTestRepository = new FakeSpeedTestRepository()
+    fakeScreenshotUpload = new FakeScreenshotUpload()
 
-    await new SpeedTest(
-      speedTestCrawler,
-      speedTestRepository,
-      screenShotUpload
+    // spies
+    jest.spyOn(fakeSpeedTestCrawler, 'crawl').mockResolvedValueOnce({
+      speedTestData,
+      screenshot
+    })
+
+    uploadSpy = jest.spyOn(fakeScreenshotUpload, 'upload')
+
+    // execution
+    result = await new SpeedTest(
+      fakeSpeedTestCrawler,
+      fakeSpeedTestRepository,
+      fakeScreenshotUpload
     ).run()
-
-    expect(fnRepositorySpy).toBeCalledWith(data)
   })
 
+  afterAll(() => jest.clearAllMocks())
+
   it('should return SpeedTestData', async () => {
-    const data: SpeedTestData = speedTestDataFactory()
-
-    const MockSpeedTestCrawler = jest.fn<SpeedTestCrawler, any>(() => ({
-      crawl: jest.fn().mockResolvedValue({
-        speedTestData: data,
-        screenshot: Buffer.from('')
-      })
-    }))
-
-    const MockSpeedTesteDataRepository = jest.fn<SpeedTesteDataRepository, any>(() => ({
-      save: jest.fn().mockResolvedValue({
-        uuid: '000-xxxx',
-        ...data
-      }),
-      getAll: jest.fn()
-    }))
-
-    const MockScreenshotUpload = jest.fn<ScreenshotUpload, any>(() => ({
-      upload: jest.fn()
-    }))
-
-    const speedTestCrawler = new MockSpeedTestCrawler()
-    const speedTestRepository = new MockSpeedTesteDataRepository()
-    const screenShotUpload = new MockScreenshotUpload()
-
-    const result = await new SpeedTest(
-      speedTestCrawler,
-      speedTestRepository,
-      screenShotUpload
-    ).run()
-
-    expect(result.uuid).toBeDefined()
+    expect(result.uuid).toEqual('1')
     expect(result.downloadSpeed).toEqual('30')
     expect(result.uploadSpeed).toEqual('10')
     expect(result.downloadUnit).toEqual('mb')
@@ -87,40 +61,7 @@ describe('SpeedTest', () => {
     expect(result.screenshot).toEqual('me.jpg')
   })
 
-  it('should call service with screenshot data', async () => {
-    const data: SpeedTestData = speedTestDataFactory()
-    const screenshot = Buffer.from('')
-
-    const MockSpeedTestCrawler = jest.fn<SpeedTestCrawler, any>(() => ({
-      crawl: jest.fn().mockResolvedValue({
-        speedTestData: data,
-        screenshot
-      })
-    }))
-
-    const MockSpeedTesteDataRepository = jest.fn<SpeedTesteDataRepository, any>(() => ({
-      save: jest.fn().mockResolvedValue({
-        uuid: '000-xxxx',
-        ...data
-      }),
-      getAll: jest.fn()
-    }))
-
-    const uploadMock = jest.fn()
-    const MockScreenshotUpload = jest.fn<ScreenshotUpload, any>(() => ({
-      upload: uploadMock
-    }))
-
-    const speedTestCrawler = new MockSpeedTestCrawler()
-    const speedTestRepository = new MockSpeedTesteDataRepository()
-    const screenShotUpload = new MockScreenshotUpload()
-
-    const result = await new SpeedTest(
-      speedTestCrawler,
-      speedTestRepository,
-      screenShotUpload
-    ).run()
-
-    expect(uploadMock).toBeCalledWith(screenshot, result.screenshot)
+  it('should call upload service with screenshot data', async () => {
+    expect(uploadSpy).toBeCalledWith(screenshot, result.screenshot)
   })
 })

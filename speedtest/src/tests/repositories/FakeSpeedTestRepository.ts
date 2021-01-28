@@ -1,14 +1,22 @@
 import SpeedTestData from '../../speed-test/dto/SpeedTestData'
 import SpeedTestRepository from '../../speed-test/repositories/SpeedTestRepository'
-import { speedTestDataFactory } from '../factories/SpeedTestData'
 
 class FakeSpeedTestRepository implements SpeedTestRepository {
+  constructor (
+    private savedData: SpeedTestData[] = []
+  ) {}
+
   async save (data: SpeedTestData): Promise<SpeedTestData> {
-    return speedTestDataFactory()
+    if (!data.uuid) {
+      data.uuid = (this.savedData.length + 1).toString()
+      this.savedData.push(data)
+    }
+    return data
   }
 
-  async getAll (): Promise<SpeedTestData[]> {
-    return []
+  async getAll (page: number): Promise<SpeedTestData[]> {
+    page = page === 0 ? page : page - 1
+    return this.savedData.slice(page)
   }
 }
 
