@@ -65,7 +65,7 @@ describe('MongooseSpeedTestRepository', () => {
     })
 
     test('should return all SpeedTestData', async () => {
-      const [result] = await new MongooseSpeedTestRepository().getAll()
+      const [result] = await new MongooseSpeedTestRepository().getAll(1)
 
       expect(result.downloadSpeed).toEqual(data.downloadSpeed)
       expect(result.uploadSpeed).toEqual(data.uploadSpeed)

@@ -28,8 +28,12 @@ class MongooseSpeedTestRepository implements SpeedTesteRepository {
     }
   }
 
-  async getAll (): Promise<SpeedTestData[]> {
-    return await SpeedTestDocument.find()
+  async getAll (page: number): Promise<SpeedTestData[]> {
+    const pageStart = (page <= 1) ? 0 : (page - 1)
+    return await SpeedTestDocument
+      .find()
+      .skip(pageStart * 10)
+      .limit(10)
   }
 }
 
