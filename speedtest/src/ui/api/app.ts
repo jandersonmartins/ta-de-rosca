@@ -4,6 +4,8 @@ import express from 'express'
 import socketIO from 'socket.io'
 import cors from 'cors'
 import debug from 'debug'
+import compression from 'compression'
+import helmet from 'helmet'
 
 import { setupHandlers } from './websocket'
 import { setupRoutes } from './http'
@@ -11,6 +13,8 @@ import { setupRoutes } from './http'
 const debugFn = debug('server')
 const app = express()
 
+app.use(compression())
+app.use(helmet())
 app.use(cors())
 setupRoutes(app)
 

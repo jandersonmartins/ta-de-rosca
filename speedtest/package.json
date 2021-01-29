@@ -6,12 +6,13 @@
   "scripts": {
     "start": "concurrently npm:start:*",
     "start:cron": "node build/src/ui/cron/index.js",
-    "start:server": "node build/src/ui/websocket/index.js",
+    "start:server": "node build/src/ui/api/index.js",
     "test": "NODE_ENV=test jest --runInBand",
     "build": "tsc",
     "lint": "eslint src --ext .ts",
+    "start:dev": "concurrently npm:dev:*",
     "dev:cron": "DEBUG=cron ts-node src/ui/cron/index.ts",
-    "dev:socket": "ts-node src/ui/websocket/index.ts"
+    "dev:socket": "ts-node src/ui/api/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -20,10 +21,12 @@
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-typescript": "^7.12.1",
+    "@types/compression": "^1.7.0",
     "@types/cors": "^2.8.9",
     "@types/debug": "^4.1.5",
     "@types/del": "^4.0.0",
     "@types/express": "^4.17.9",
+    "@types/helmet": "^4.0.0",
     "@types/jest": "^26.0.15",
     "@types/mongoose": "^5.10.1",
     "@types/node-cron": "^2.0.3",
@@ -47,11 +50,13 @@
     "typescript": "^4.0.5"
   },
   "dependencies": {
+    "compression": "^1.7.4",
     "concurrently": "^5.3.0",
     "cors": "^2.8.5",
     "debug": "^4.3.1",
     "express": "^4.17.1",
     "form-data": "^3.0.0",
+    "helmet": "^4.4.1",
     "mongoose": "^5.10.15",
     "node-cron": "^2.0.3",
     "puppeteer": "^5.5.0",
