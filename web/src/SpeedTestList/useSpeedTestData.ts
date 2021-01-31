@@ -48,7 +48,12 @@ const useSpeedTestData = (): UseSpeedTestOutput => {
 
   const nextPage = useCallback(() => load(page), [page, load])
 
-  return { data, loading, error, nextPage }
+  return {
+    data,
+    loading,
+    error,
+    nextPage
+  }
 }
 
 export { useSpeedTestData }
