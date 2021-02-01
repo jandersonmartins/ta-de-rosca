@@ -3,7 +3,9 @@ package handlers
 import (
 	"io/ioutil"
 	"net/http"
-	"ta-de-rosca/screenshotstorage/src/storage"
+	config "ta-de-rosca/screenshotstorage/src/config"
+	"ta-de-rosca/screenshotstorage/src/domain/storage"
+	"ta-de-rosca/screenshotstorage/src/infra/providers"
 	"ta-de-rosca/screenshotstorage/src/ui/http/helpers"
 )
 
@@ -24,7 +26,10 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	storage.NewSaveFile().Save(fileBytes, head.Filename)
+	storage.NewSaveFile(
+		config.GetScreenshotDir(),
+		providers.NativeStorage{},
+	).Save(fileBytes, head.Filename)
 
 	jsonRes := mountJSON("name", head.Filename)
 	helpers.JSONResponse(w, http.StatusOK, jsonRes)

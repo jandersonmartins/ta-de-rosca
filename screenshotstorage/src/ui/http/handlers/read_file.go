@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 	"strconv"
-	storage "ta-de-rosca/screenshotstorage/src/storage"
+	storage "ta-de-rosca/screenshotstorage/src/domain/storage"
 )
 
 func ReadFile(w http.ResponseWriter, r *http.Request) {
