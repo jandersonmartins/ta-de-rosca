@@ -1,28 +1,37 @@
 package handlers
 
 import (
-	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
-	storage "ta-de-rosca/screenshotstorage/src/storage"
+	"ta-de-rosca/screenshotstorage/src/storage"
+	"ta-de-rosca/screenshotstorage/src/ui/http/helpers"
 )
 
+// Upload handle POST /upload requests
 func Upload(w http.ResponseWriter, r *http.Request) {
-	file, head, errorForm := r.FormFile("file")
-	if errorForm != nil {
-		fmt.Println(errorForm)
+	w.Header().Set("Content-Type", "application/json")
+
+	file, head, err := r.FormFile("file")
+	if err != nil {
+		helpers.JSONError(w, "file is required", http.StatusUnprocessableEntity)
+		return
 	}
 	defer file.Close()
 
-	fileBytes, errFileBytes := ioutil.ReadAll(file)
-	if errFileBytes != nil {
-		fmt.Println("errFileBytes", errFileBytes)
+	fileBytes, err := ioutil.ReadAll(file)
+	if err != nil {
+		helpers.JSONError(w, "can't read file", http.StatusInternalServerError)
+		return
 	}
 
 	storage.NewSaveFile().Save(fileBytes, head.Filename)
 
-	w.Header().Set("Content-Type", "application/json")
-	res := map[string]string{"name": head.Filename}
-	json.NewEncoder(w).Encode(res)
+	jsonRes := mountJSON("name", head.Filename)
+	helpers.JSONResponse(w, http.StatusOK, jsonRes)
+}
+
+func mountJSON(key, value string) map[string]string {
+	var m = make(map[string]string)
+	m[key] = value
+	return m
 }

@@ -1,12 +1,18 @@
 package main
 
 import (
+	"ta-de-rosca/screenshotstorage/src/ui/http/handlers"
+
+	"github.com/gorilla/mux"
+
 	"net/http"
-	handlers "ta-de-rosca/screenshotstorage/src/ui/http/handlers"
 )
 
 func main() {
-	http.HandleFunc("/upload", handlers.Upload)
-	http.HandleFunc("/files", handlers.ReadFile)
-	http.ListenAndServe(":3001", nil)
+	r := mux.NewRouter()
+
+	r.HandleFunc("/upload", handlers.Upload).Methods("POST")
+	r.HandleFunc("/files", handlers.ReadFile).Methods("GET")
+
+	http.ListenAndServe(":3001", r)
 }
