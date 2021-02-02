@@ -15,8 +15,15 @@ func NewNativeStorage() *NativeStorage {
 }
 
 // Store save a file using native io
-func (n NativeStorage) Store(filepath string, file []byte) {
+func (n NativeStorage) Store(filepath string, file []byte) (err error) {
 	dir := path.Dir(filepath)
-	os.MkdirAll(dir, 0777)
-	ioutil.WriteFile(filepath, file, 0777)
+	err = os.MkdirAll(dir, 0777)
+	if err != nil {
+		return
+	}
+	err = ioutil.WriteFile(filepath, file, 0777)
+	if err != nil {
+		return
+	}
+	return
 }

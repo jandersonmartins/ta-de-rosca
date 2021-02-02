@@ -20,8 +20,11 @@ func NewSaveFile(directory string, storageProvider providers.Storage) *SaveFile 
 }
 
 // Save save a new file
-func (sf *SaveFile) Save(file []byte, filename string) string {
+func (sf *SaveFile) Save(file []byte, filename string) (string, error) {
 	fullPath := path.Join(sf.directory, filename)
-	sf.storageProvider.Store(fullPath, file)
-	return fullPath
+	err := sf.storageProvider.Store(fullPath, file)
+	if err != nil {
+		return "", err
+	}
+	return fullPath, nil
 }

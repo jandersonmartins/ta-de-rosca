@@ -8,7 +8,7 @@ import (
 
 func TestSaveFile(t *testing.T) {
 	t.Run("should return filepath", func(t *testing.T) {
-		result := NewSaveFile("/test", &fakes.FakeStorage{}).Save([]byte{}, "foo.jpg")
+		result, _ := NewSaveFile("/test", &fakes.FakeStorage{}).Save([]byte{}, "foo.jpg")
 		expected := "/test/foo.jpg"
 		if result != expected {
 			t.Errorf("expected %q got %q", expected, result)

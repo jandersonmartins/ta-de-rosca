@@ -13,23 +13,27 @@ import (
 func Upload(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	file, head, err := r.FormFile("file")
-	if err != nil {
+	file, head, errFormFile := r.FormFile("file")
+	if errFormFile != nil {
 		helpers.JSONError(w, "file is required", http.StatusUnprocessableEntity)
 		return
 	}
 	defer file.Close()
 
-	fileBytes, err := ioutil.ReadAll(file)
-	if err != nil {
+	fileBytes, errFileRead := ioutil.ReadAll(file)
+	if errFileRead != nil {
 		helpers.JSONError(w, "can't read file", http.StatusInternalServerError)
 		return
 	}
 
-	storage.NewSaveFile(
+	_, errStore := storage.NewSaveFile(
 		config.GetScreenshotDir(),
 		providers.NativeStorage{},
 	).Save(fileBytes, head.Filename)
+	if errStore != nil {
+		helpers.JSONError(w, "can't save the file", http.StatusUnprocessableEntity)
+		return
+	}
 
 	jsonRes := mountJSON("name", head.Filename)
 	helpers.JSONResponse(w, http.StatusOK, jsonRes)

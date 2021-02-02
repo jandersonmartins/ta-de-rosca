@@ -7,7 +7,8 @@ type FakeStorage struct {
 }
 
 // Store act as a spy
-func (fs *FakeStorage) Store(filepath string, file []byte) {
+func (fs *FakeStorage) Store(filepath string, file []byte) error {
 	fs.CallFile = file
 	fs.CallPath = filepath
+	return nil
 }
