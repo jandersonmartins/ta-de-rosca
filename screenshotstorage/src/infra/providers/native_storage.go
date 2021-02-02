@@ -27,3 +27,12 @@ func (n NativeStorage) Store(filepath string, file []byte) (err error) {
 	}
 	return
 }
+
+// Read a file using native io
+func (n NativeStorage) Read(filepath string) ([]byte, error) {
+	file, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		return nil, err
+	}
+	return file, nil
+}

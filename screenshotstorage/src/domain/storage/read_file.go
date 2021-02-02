@@ -1,29 +1,35 @@
 package storage
 
 import (
-	"io/ioutil"
 	"path"
 	"strings"
-	config "ta-de-rosca/screenshotstorage/src/config"
+	"ta-de-rosca/screenshotstorage/src/domain/providers"
 )
 
-type readFile struct{}
-
-func NewReadFile() *readFile {
-	return &readFile{}
+// ReadFile usecase is reponsible to read a file
+type ReadFile struct {
+	directory       string
+	storageProvider providers.Storage
 }
 
-func (rf *readFile) Read(fileName string) ([]byte, string, error) {
-	dir := config.GetScreenshotDir()
-	fullPath := path.Join(dir, fileName)
-	file, err := ioutil.ReadFile(fullPath)
+// NewReadFile returns a new readFile "instance"
+func NewReadFile(directory string, storageProvider providers.Storage) *ReadFile {
+	return &ReadFile{
+		directory:       directory,
+		storageProvider: storageProvider,
+	}
+}
+
+func (rf *ReadFile) Read(fileName string) ([]byte, string, error) {
+	fullPath := path.Join(rf.directory, fileName)
+	file, err := rf.storageProvider.Read(fullPath)
 	if err != nil {
 		return nil, "", err
 	}
-	extension := rf.GetExtension(fileName)
+	extension := rf.getExtension(fileName)
 	return file, extension, nil
 }
 
-func (rf *readFile) GetExtension(fileName string) string {
+func (rf *ReadFile) getExtension(fileName string) string {
 	return strings.Split(fileName, ".")[1]
 }
