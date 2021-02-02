@@ -10,7 +10,7 @@ describe('FastComCrawler', () => {
   let server: Server
 
   beforeAll(async () => {
-    await new Promise(resolve => {
+    await new Promise<void>((resolve) => {
       server = createServer((_, res) => {
         createReadStream(join(__dirname, '/fixtures/example.html')).pipe(res)
       })
@@ -25,7 +25,7 @@ describe('FastComCrawler', () => {
     try {
       await del(path)
     } catch (e) { }
-    await new Promise(resolve => {
+    await new Promise<void>(resolve => {
       server.close(() => resolve())
     })
   })

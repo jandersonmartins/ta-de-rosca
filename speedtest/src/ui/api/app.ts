@@ -1,13 +1,11 @@
 import { createServer } from 'http'
 
 import express from 'express'
-import socketIO from 'socket.io'
 import cors from 'cors'
 import debug from 'debug'
 import compression from 'compression'
 import helmet from 'helmet'
 
-import { setupHandlers } from './websocket'
 import { setupRoutes } from './http'
 
 const debugFn = debug('server')
@@ -16,22 +14,16 @@ const app = express()
 app.use(compression())
 app.use(helmet())
 app.use(cors())
+
 setupRoutes(app)
 
 const server = createServer(app)
-const io = new socketIO.Server(server, {
-  cors: {
-    origin: '*',
-    methods: ['GET', 'POST']
-  }
-})
 
 export const start = async (): Promise<void> => {
   return new Promise(resolve => {
     const port = process.env.SERVER_PORT ?? 4001
     server.listen(port, () => {
       debugFn('server started at %d', port)
-      setupHandlers(io)
       resolve()
     })
   })
