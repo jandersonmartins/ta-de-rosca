@@ -11,10 +11,16 @@ import (
 
 // ReadFile handle all GET /files request
 func ReadFile(w http.ResponseWriter, r *http.Request) {
+	name := r.URL.Query().Get("name")
+	if name == "" {
+		helpers.JSONError(w, "name required", http.StatusBadRequest)
+		return
+	}
+
 	file, extension, err := storage.NewReadFile(
 		config.GetScreenshotDir(),
 		providers.NativeStorage{},
-	).Read(r.URL.Query().Get("name"))
+	).Read(name)
 
 	if err != nil {
 		helpers.JSONError(w, "can't read the file", http.StatusInternalServerError)
