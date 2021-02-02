@@ -2,6 +2,7 @@ package main
 
 import (
 	"ta-de-rosca/screenshotstorage/src/ui/http/handlers"
+	"ta-de-rosca/screenshotstorage/src/ui/http/middlewares"
 
 	"github.com/gorilla/mux"
 
@@ -11,8 +12,10 @@ import (
 func main() {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/upload", handlers.Upload).Methods("POST")
-	r.HandleFunc("/files", handlers.ReadFile).Methods("GET")
+	r.HandleFunc("/upload", handlers.Upload).Methods(http.MethodPost)
+	r.HandleFunc("/files", handlers.ReadFile).Methods(http.MethodGet)
+
+	r.Use(middlewares.LogginMiddleware)
 
 	http.ListenAndServe(":3001", r)
 }
